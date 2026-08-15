@@ -66,12 +66,16 @@ package Nested_Loop_Join is
      (Index_Type   => Positive,
       Element_Type => Tuple);
 
+   -- EXPLICITLY make the Vector equality operator visible for the Hash Map
+   use type Tuple_Vectors.Vector;
+
    -- Hash map acting as our Index
    package Inner_Index_Maps is new Ada.Containers.Hashed_Maps
      (Key_Type        => Key_Type,
       Element_Type    => Tuple_Vectors.Vector,
       Hash            => Hash,
-      Equivalent_Keys => "=");
+      Equivalent_Keys => "=",
+      "="             => Tuple_Vectors."="); -- Explicit mapping to prevent visibility errors
       
    subtype Inner_Index is Inner_Index_Maps.Map;
 
